@@ -1,6 +1,6 @@
 # Moka - Opencart Payment Gateway
 
-![image](https://optimisthub.com/cdn/moka/moka-opencart-plugin.png)
+![image](https://optimisthub.com/cdn/moka/moka-opencart-plugin.png?v2)
 
 ## Requirements
 
