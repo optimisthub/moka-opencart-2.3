@@ -1,4 +1,4 @@
-# Moka - Opencart Payment Gateway
+# Moka - Opencart Payment Gateway Plugin
 
 ![image](https://optimisthub.com/cdn/moka/moka-opencart-plugin.png?v2)
 
