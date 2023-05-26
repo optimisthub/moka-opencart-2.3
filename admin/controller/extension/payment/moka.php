@@ -76,14 +76,6 @@ class ControllerExtensionPaymentMoka extends Controller
         $data['column_transaction_status'] = $this->language->get('column_transaction_status');
         $data['column_created_at'] = $this->language->get('column_created_at');
 
-        $data['error_api_environment'] = $this->language->get('error_api_environment');
-        $data['error_dealer_code'] = $this->language->get('error_dealer_code');
-        $data['error_username'] = $this->language->get('error_username');
-        $data['error_password'] = $this->language->get('error_password');
-        $data['error_order_status'] = $this->language->get('error_order_status');
-        $data['error_cancel_order_status'] = $this->language->get('error_cancel_order_status');
-        $data['error_permission'] = $this->language->get('error_permission');
-
         $data['error_api_environment'] = '';
         $data['error_dealer_code'] = '';
         $data['error_username'] = '';
@@ -224,8 +216,8 @@ class ControllerExtensionPaymentMoka extends Controller
         $this->load->model('sale/order');
 
         foreach ($transactions as $transaction) {
-            $amount = $this->currency->format($transaction['amount'], $transaction['currency_code']);
-            $commission_amount = $this->currency->format($transaction['commission_amount'], $transaction['currency_code']);
+            $amount = $transaction['amount'] . ' ' . $transaction['currency_code'];
+            $commission_amount = $transaction['commission_amount'] . ' ' . $transaction['currency_code'];
 
             $order_info = $this->model_sale_order->getOrder($transaction['order_id']);
 
