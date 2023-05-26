@@ -1,22 +1,27 @@
 <?php
 
 // Text
-$_['payment_failed']            = 'Payment Failed';
-$_['text_title']                = 'Moka';
-$_['payment_field_desc']        = 'Payment ID';
-$_['installement_field_desc']   = 'Installement';
+$_['payment_failed']                = 'Payment Failed';
+$_['text_title']                    = 'Bank / Credit Card';
+$_['text_test_alert']               = 'Test Mode';
+$_['text_installment_content']      = 'Installment options shown after entering card number.';
+$_['text_installement_options']     = 'Installement Options';
+$_['text_pay']                      = 'PAY';
+$_['text_single_payment']           = 'Single Payment';
 
 //entry
-$_['entry_card_holder_full_name']       = 'Card Holder Full Name';
-$_['entry_card_number']                 = 'Card Number';
-$_['entry_card_expiry_month']           = 'Expiry Month';
-$_['entry_card_expiry_year']            = 'Expiry Year';
-$_['entry_card_cvc_number']             = 'CVC Number';
+$_['entry_card_holder_full_name']   = 'Cardholder Name';
+$_['entry_card_number']             = 'Card Number';
+$_['entry_card_expire_date']        = 'Month / Year';
+$_['entry_card_cvc']                = 'CVC';
 
 // Error
-$_['error_card_holder_full_name'] = 'There is an error in the card information.';
-$_['error_card_number'] = 'There is an error in the card information.';
-$_['error_card_cvc_number'] = 'There is an error in the card information.';
+$_['error_card_holder_full_name']   = 'There is an error in the cardholder\'s full name.';
+$_['error_card_number']             = 'There is an error in the card number.';
+$_['error_expiry_date']             = 'There is an error in the expiry date.';
+$_['error_cvc_number']              = 'There is an error in the CVC number.';
+$_['error_installment']             = 'There is an error in the installment information.';
+$_['error_order_expired']           = 'Your transaction has expired, please refresh the page.';
 
 $_['PaymentDealer.CheckPaymentDealerAuthentication.InvalidRequest'] = 'The CheckKey may be bad, or the object may be bad, or the JSON may be corrupt.';
 $_['PaymentDealer.CheckPaymentDealerAuthentication.InvalidAccount'] = 'No such dealer was found, Dealer code, dealer username and/or password were entered incorrectly.';

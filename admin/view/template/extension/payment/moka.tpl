@@ -25,7 +25,7 @@
 				<h3 class="panel-title"><i class="fa fa-pencil"></i> <?php echo $text_edit; ?></h3>
 			</div>
 			<div class="panel-body">
-				<form action="<?php echo $action; ?>" method="POST" id="form-payment" class="form-horizontal">
+				<form method="POST" id="form-payment" class="form-horizontal">
 					<ul class="nav nav-tabs">
 						<li class="active"><a href="#tab-setting" data-toggle="tab"><i class="fa fa-gear"></i>&nbsp;<?php echo $tab_setting; ?></a></li>
 						<li><a href="#tab-transaction" data-toggle="tab"><i class="fa fa-list"></i>&nbsp;<?php echo $tab_transaction; ?></a></li>
@@ -39,36 +39,36 @@
                                         <option value="test" <?php echo $moka_api_environment == 'test' ? 'selected' : ''; ?>><?php echo $text_sandbox; ?></option>
                                         <option value="live" <?php echo $moka_api_environment == 'live' ? 'selected' : ''; ?>><?php echo $text_live; ?></option>
 									</select>
-									<?php if ($error_api_environment): ?>
+									<?php if ($error_api_environment) { ?>
 										<div class="text-danger"><?php echo $error_api_environment; ?></div>
-									<?php endif; ?>
+									<?php } ?>
 								</div>
 							</div>
 							<div class="form-group required">
 								<label class="col-sm-2 control-label" for="moka-dealer-code"><?php echo $entry_dealer_code; ?></label>
 								<div class="col-sm-10">
 									<input type="text" name="moka_dealer_code" class="form-control" value="<?php echo $moka_dealer_code; ?>" placeholder="<?php echo $entry_dealer_code; ?>" id="moka-dealer-code"/>
-									<?php if ($error_dealer_code): ?>
+									<?php if ($error_dealer_code) { ?>
 										<div class="text-danger"><?php echo $error_dealer_code; ?></div>
-									<?php endif; ?>
+									<?php } ?>
 								</div>
 							</div>
 							<div class="form-group required">
 								<label class="col-sm-2 control-label" for="moka-username"><?php echo $entry_username; ?></label>
 								<div class="col-sm-10">
 									<input type="text" name="moka_username" class="form-control" value="<?php echo $moka_username; ?>" placeholder="<?php echo $entry_username; ?>" id="moka-username"/>
-									<?php if ($error_username): ?>
+									<?php if ($error_username) { ?>
 										<div class="text-danger"><?php echo $error_username; ?></div>
-									<?php endif; ?>
+									<?php } ?>
 								</div>
 							</div>
 							<div class="form-group required">
 								<label class="col-sm-2 control-label" for="moka-password"><?php echo $entry_password; ?></label>
 								<div class="col-sm-10">
 									<input type="text" name="moka_password" class="form-control" value="<?php echo $moka_password; ?>" placeholder="<?php echo $entry_password; ?>" id="moka-password"/>
-									<?php if ($error_password): ?>
+									<?php if ($error_password) { ?>
 										<div class="text-danger"><?php echo $error_password; ?></div>
-									<?php endif; ?>
+									<?php } ?>
 								</div>
 							</div>
 							<div class="form-group required">
@@ -78,16 +78,16 @@
 								<div class="col-sm-10">
 									<select name="moka_order_status" class="form-control" id="moka-order-status">
 										<?php foreach ($order_statuses as $order_status) { ?>
-											<?php if ($order_status['order_status_id'] == $moka_order_status): ?>
+											<?php if ($order_status['order_status_id'] == $moka_order_status) { ?>
 												<option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
-											<?php else: ?>
+											<?php } else { ?>
 												<option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
-											<?php endif; ?>
+											<?php } ?>
 										<?php } ?>
 									</select>
-									<?php if ($error_order_status): ?>
+									<?php if ($error_order_status) { ?>
 										<div class="text-danger"><?php echo $error_order_status; ?></div>
-									<?php endif; ?>
+									<?php } ?>
 								</div>
 							</div>
 							<div class="form-group required">
@@ -97,35 +97,27 @@
 								<div class="col-sm-10">
 									<select name="moka_cancel_order_status" class="form-control" id="moka-cancel-order-status">
 										<?php foreach ($order_statuses as $order_status) { ?>
-											<?php if ($order_status['order_status_id'] == $moka_cancel_order_status): ?>
+											<?php if ($order_status['order_status_id'] == $moka_cancel_order_status) { ?>
 												<option value="<?php echo $order_status['order_status_id']; ?>" selected="selected"><?php echo $order_status['name']; ?></option>
-											<?php else: ?>
+											<?php } else { ?>
 												<option value="<?php echo $order_status['order_status_id']; ?>"><?php echo $order_status['name']; ?></option>
-											<?php endif; ?>
+											<?php } ?>
 										<?php } ?>
 									</select>
-									<?php if ($error_cancel_order_status): ?>
+									<?php if ($error_cancel_order_status) { ?>
 										<div class="text-danger"><?php echo $error_cancel_order_status; ?></div>
-									<?php endif; ?>
+									<?php } ?>
 								</div>
 							</div>
-                            <div class="form-group">
-                                <label class="col-sm-2 control-label" for="moka-status"><?php echo $text_status; ?></label>
-                                <div class="col-sm-10">
-                                    <select name="moka_status" id="moka-status" class="form-control">
-                                        <?php if ($moka_status == 1) { ?>
-                                            <option value="1" selected="selected"><?php echo $text_extension_status_enabled; ?></option>
-                                        <?php } else { ?>
-                                            <option value="1"><?php echo $text_extension_status_enabled; ?></option>
-                                        <?php } ?>
-                                        <?php if ($moka_status == 0) { ?>
-                                            <option value="0" selected="selected"><?php echo $text_extension_status_disabled; ?></option>
-                                        <?php } else { ?>
-                                            <option value="0"><?php echo $text_extension_status_disabled; ?></option>
-                                        <?php } ?>
-                                    </select>
-                                </div>
-                            </div>
+							<div class="form-group">
+								<label class="col-sm-2 control-label" for="moka-status"><?php echo $text_status; ?></label>
+								<div class="col-sm-10">
+									<select name="moka_status" class="form-control" id="moka-status">
+                                        <option value="1" <?php echo $moka_status == 1 ? 'selected' : ''; ?>><?php echo $text_extension_status_enabled; ?></option>
+                                        <option value="0" <?php echo $moka_status == 0 ? 'selected' : ''; ?>><?php echo $text_extension_status_disabled; ?></option>
+									</select>
+								</div>
+							</div>
 							<div class="form-group">
 								<label class="col-sm-2 control-label" for="moka-sort-order"><?php echo $text_sort_order; ?></label>
 								<div class="col-sm-10">

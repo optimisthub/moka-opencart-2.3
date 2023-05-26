@@ -1,0 +1,86 @@
+<svg width="61" height="18" viewBox="0 0 61 18" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <defs>
+        <path d="M10.05 2.662c-.094-.288-.133-.533.05-.773l1.401-1.84 1.404 1.84c.182.24.144.485.048.773C12.72 3.368 11.5 6.89 11.5 6.89s-1.217-3.522-1.45-4.228" id="53petfqd8a"/>
+        <path d="M5.094 6.583c.602-.746 1.147-1.455 2.79-.607l2.95 1.517-6.474-.002.734-.908z" id="qu2j8uns2b"/>
+        <path d="m12.17 7.493 2.948-1.517c1.646-.848 2.19-.139 2.79.607l.735.908-6.473.002z" id="tn5jy2b36c"/>
+        <path d="M7.682 4.885c-.365-.234-.766-.426-1.269-.426l-1.148-.005 2.287-1.372c.59-.355 1.265-.118 1.529.353l2.034 3.647-3.433-2.197z" id="jtpntvp0id"/>
+        <path d="M13.923 3.435c.263-.471.938-.708 1.53-.353l2.285 1.372-1.145.005c-.505 0-.907.192-1.272.426L11.89 7.082l2.033-3.647z" id="bmnsktk0ze"/>
+        <path d="M11.95 7.545a.447.447 0 1 1-.895 0 .447.447 0 0 1 .894 0" id="dfe83cyjyf"/>
+        <path d="M.062 13.525v-1.29H2.64v-.644H.707a.635.635 0 0 1-.645-.645V9.012a.62.62 0 0 1 .186-.454.625.625 0 0 1 .459-.19H3.93v1.288H1.351v.645h1.935c.177 0 .329.064.452.192a.62.62 0 0 1 .192.453v1.934a.614.614 0 0 1-.192.458.624.624 0 0 1-.452.187H.062z" id="85r413z2pg"/>
+        <path d="M6.05 10.301h1.29v-.645H6.05v.645zm-1.29 3.224V9.012a.62.62 0 0 1 .187-.454.624.624 0 0 1 .458-.19h2.579c.178 0 .33.063.453.19.128.128.192.28.192.454v4.513H7.34V11.59H6.05v1.934H4.76z" id="tvc5l8izwh"/>
+        <path d="M10.104 13.525a.635.635 0 0 1-.644-.644V9.01a.62.62 0 0 1 .186-.453.624.624 0 0 1 .458-.19h3.223v1.288H10.75v2.58h1.29V10.3h1.288v3.224h-3.223z" id="k7imibz9fi"/>
+        <path id="qpug4xny1j" d="M14.159 13.525V8.368h1.289v3.867h2.579v1.29z"/>
+        <path d="M20.147 10.301h1.29v-.645h-1.29v.645zm-1.29 3.224V9.012a.62.62 0 0 1 .187-.454.625.625 0 0 1 .459-.19h2.579c.177 0 .328.063.452.19.128.128.192.28.192.454v4.513h-1.29V11.59h-1.29v1.934h-1.289z" id="g1czsmfztk"/>
+        <path id="pwxnshchol" d="M23.556 13.525V8.368h1.612l.967 1.933.968-1.933h1.611v5.157h-1.29V10.3l-1.289 2.58-1.29-2.58v3.224z"/>
+        <path d="m9.705 17.963-.942-1.886.942-1.885h.944l-.944 1.885.944 1.886h-.944zm-1.885 0h.943v-3.77H7.82v3.77z" id="3ehr7s8dxm"/>
+        <path d="M12.199 15.606h.943v-.472h-.943v.472zm-.943 2.357v-3.3c0-.13.045-.24.136-.331a.457.457 0 0 1 .336-.14h1.885c.13 0 .241.047.331.14.093.093.14.204.14.331v3.3h-.942v-1.414h-.943v1.414h-.943z" id="vhu1225prn"/>
+        <path d="M15.634 15.606h.943v-.472h-.943v.472zm-.942 2.357v-3.77h2.357c.13 0 .24.046.33.139.094.093.141.204.141.331v1.414a.452.452 0 0 1-.14.336.455.455 0 0 1-.331.136h-.236l.707 1.414h-.943l-.706-1.414h-.237v1.414h-.942z" id="7mhlf0hyxo"/>
+        <path id="o5h8zslckp" d="M19.07 17.963v-2.829h-.942v-.942h2.828v.942h-.943v2.829z"/>
+    </defs>
+    <g fill="none" fill-rule="evenodd">
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#53petfqd8a"/>
+            <use fill="#9B9B9B" xlink:href="#53petfqd8a"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#qu2j8uns2b"/>
+            <use fill="#9B9B9B" xlink:href="#qu2j8uns2b"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#tn5jy2b36c"/>
+            <use fill="#9B9B9B" xlink:href="#tn5jy2b36c"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#jtpntvp0id"/>
+            <use fill="#9B9B9B" xlink:href="#jtpntvp0id"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#bmnsktk0ze"/>
+            <use fill="#9B9B9B" xlink:href="#bmnsktk0ze"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#dfe83cyjyf"/>
+            <use fill="#9B9B9B" xlink:href="#dfe83cyjyf"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#85r413z2pg"/>
+            <use fill="#9B9B9B" xlink:href="#85r413z2pg"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#tvc5l8izwh"/>
+            <use fill="#9B9B9B" xlink:href="#tvc5l8izwh"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#k7imibz9fi"/>
+            <use fill="#9B9B9B" xlink:href="#k7imibz9fi"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#qpug4xny1j"/>
+            <use fill="#9B9B9B" xlink:href="#qpug4xny1j"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#g1czsmfztk"/>
+            <use fill="#9B9B9B" xlink:href="#g1czsmfztk"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#pwxnshchol"/>
+            <use fill="#9B9B9B" xlink:href="#pwxnshchol"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#3ehr7s8dxm"/>
+            <use fill="#9B9B9B" xlink:href="#3ehr7s8dxm"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#vhu1225prn"/>
+            <use fill="#9B9B9B" xlink:href="#vhu1225prn"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#7mhlf0hyxo"/>
+            <use fill="#9B9B9B" xlink:href="#7mhlf0hyxo"/>
+        </g>
+        <g transform="translate(15.939)">
+            <use fill="#006F51" xlink:href="#o5h8zslckp"/>
+            <use fill="#9B9B9B" xlink:href="#o5h8zslckp"/>
+        </g>
+    </g>
+</svg>
