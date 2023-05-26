@@ -1,6 +1,6 @@
 <?php
 
-require_once(__DIR__ . '/moka-php/autoload.php');
+require_once(DIR_SYSTEM . 'library/moka-php/autoload.php');
 
 class Moka
 {
