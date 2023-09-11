@@ -95,8 +95,7 @@ class ControllerExtensionPaymentMoka extends Controller
             $retrieveInstallmentInfoRequest->setCurrency($currency);
             $retrieveInstallmentInfoRequest->setOrderAmount($order_amount);
             $retrieveInstallmentInfoRequest->setIsThreeD(1);
-            $retrieveInstallmentInfoRequest->setIsIncludedCommissionAmount(1);
-    
+            
             $retrieveInstallmentInfo = $moka->payments()->retrieveInstallmentInfo($retrieveInstallmentInfoRequest);   
 
             $retrieveInstallmentInfoData = (object) [
@@ -186,8 +185,7 @@ class ControllerExtensionPaymentMoka extends Controller
             $retrieveInstallmentInfoRequest->setCurrency($currency);
             $retrieveInstallmentInfoRequest->setOrderAmount($order_amount);
             $retrieveInstallmentInfoRequest->setIsThreeD(1);
-            $retrieveInstallmentInfoRequest->setIsIncludedCommissionAmount(1);
-    
+            
             $retrieveInstallmentInfo = $moka->payments()->retrieveInstallmentInfo($retrieveInstallmentInfoRequest);   
     
             $retrieveInstallmentInfoData = (object) [
