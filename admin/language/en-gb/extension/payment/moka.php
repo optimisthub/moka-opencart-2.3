@@ -1,7 +1,7 @@
 <?php
 
-$_['heading_title']                     = 'Moka Payment';
-$_['text_moka']                         = '<a href="https://www.moka.com" target="_blank"><img src="view/image/payment/moka.png" title="Moka"></a>';
+$_['heading_title']                     = 'Moka United Payment';
+$_['text_moka']                         = '<a href="https://www.mokaunited.com" target="_blank"><img src="view/image/payment/moka.png" title="Moka United"></a>';
 
 // Tab
 $_['tab_setting']                       = 'Settings';
@@ -14,10 +14,10 @@ $_['text_extension']                    = 'Extensions';
 $_['text_extension_status_disabled']    = 'Disabled';
 $_['text_extension_status_enabled']     = 'Enabled';
 
-$_['text_success']                      = 'Success: You have modified Moka Payment module!';
+$_['text_success']                      = 'Success: You have modified Moka United Payment module!';
 $_['text_live']                         = 'Live';
 $_['text_sandbox']                      = 'Sandbox';
-$_['text_edit']                         = 'Edit Moka Payment';
+$_['text_edit']                         = 'Edit Moka United Payment';
 $_['text_sort_order']                   = 'Sort Order';
 $_['text_no_transactions']              = 'No transactions';
 

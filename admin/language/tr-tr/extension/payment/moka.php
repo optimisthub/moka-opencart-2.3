@@ -1,7 +1,7 @@
 <?php
 
-$_['heading_title']                     = 'Moka Ödeme';
-$_['text_moka']                         = '<a href="https://www.moka.com" target="_blank"><img src="view/image/payment/moka.png" title="Moka"></a>';
+$_['heading_title']                     = 'Moka United Ödeme';
+$_['text_moka']                         = '<a href="https://www.mokaunited.com" target="_blank"><img src="view/image/payment/moka.png" title="Moka United"></a>';
 
 // Tab
 $_['tab_setting']                       = 'Ayarlar';
@@ -14,10 +14,10 @@ $_['text_extension']                    = 'Eklentiler';
 $_['text_extension_status_disabled']    = 'Aktif değil';
 $_['text_extension_status_enabled']     = 'Aktif';
 
-$_['text_success']                      = 'Başarılı: Moka Ödeme modülünü güncellendiniz!';
+$_['text_success']                      = 'Başarılı: Moka United Ödeme modülünü güncellendiniz!';
 $_['text_live']                         = 'Live';
 $_['text_sandbox']                      = 'Sandbox';
-$_['text_edit']                         = 'Moka Ödeme Düzenle';
+$_['text_edit']                         = 'Moka United Ödeme Düzenle';
 $_['text_sort_order']                   = 'Sıralama';
 $_['text_no_transactions']              = 'İşlem Yok';
 
