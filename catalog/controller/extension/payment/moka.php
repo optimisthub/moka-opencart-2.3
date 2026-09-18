@@ -83,7 +83,18 @@ class ControllerExtensionPaymentMoka extends Controller
             $request->setAmount($order_amount);
             $request->setCurrency($currency);
             $request->setInstallmentNumber($installment);
-            $request->setClientIp($order_info['ip']);
+            $clientInfo = \Moka\ClientInfo::resolve();
+            $clientIp = $clientInfo['ip'];
+
+            // Prefer the public address from the live connection, but fall back
+            // to the stored order IP when the request itself carries only a
+            // private address (for example an unconfigured reverse proxy).
+            if (!\Moka\ClientInfo::isPublicIp($clientIp) && \Moka\ClientInfo::isPublicIp($order_info['ip'])) {
+                $clientIp = $order_info['ip'];
+            }
+
+            $request->setClientIp($clientIp);
+            $request->setClientPort($clientInfo['port']);
             $request->setOtherTrxCode($order_id);
             $request->setSoftware('OPENCART');
             $request->setReturnHash(1);
