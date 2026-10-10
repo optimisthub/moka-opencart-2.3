@@ -13,6 +13,10 @@ class CurlClient implements ClientInterface
         curl_setopt($curl, CURLOPT_URL, $request->getUrl());
         curl_setopt($curl, CURLOPT_HTTPHEADER, $request->getHeaders());
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        // Moka yanit vermezse istek sonsuza kadar asili kalmasin; aksi halde PHP
+        // worker'i libcurl icinde kilitlenir ve magaza cokme noktasina gelir.
+        curl_setopt($curl, CURLOPT_CONNECTTIMEOUT, 10);
+        curl_setopt($curl, CURLOPT_TIMEOUT, 60);
         curl_setopt($curl, CURLOPT_HEADER, false);
 
         switch ($request->getMethod()) {

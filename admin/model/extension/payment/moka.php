@@ -47,10 +47,22 @@ class ModelExtensionPaymentMoka extends Model
           KEY `order_id` (`order_id`),
           KEY `payment_id` (`payment_id`)
         ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+
+        $this->db->query("CREATE TABLE IF NOT EXISTS `" . DB_PREFIX . "moka_pending` (
+          `trx_code` varchar(64) NOT NULL,
+          `order_id` int(11) NOT NULL,
+          `code_for_hash` varchar(64) NOT NULL,
+          `amount` decimal(10,2) NOT NULL,
+          `currency` varchar(8) NOT NULL,
+          `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+          PRIMARY KEY (`trx_code`),
+          KEY `order_id` (`order_id`)
+        ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
     }
 
     public function dropTables()
     {
         $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "moka_transaction`");
+        $this->db->query("DROP TABLE IF EXISTS `" . DB_PREFIX . "moka_pending`");
     }
 }

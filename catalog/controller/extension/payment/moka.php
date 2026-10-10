@@ -95,7 +95,12 @@ class ControllerExtensionPaymentMoka extends Controller
 
             $request->setClientIp($clientIp);
             $request->setClientPort($clientInfo['port']);
-            $request->setOtherTrxCode($order_id);
+            // Moka OtherTrxCode'u bayi bazinda KALICI olarak benzersiz ister; siparis
+            // kimligi tekrar kullanilabilir bir deger oldugu icin ayni siparisle
+            // ikinci deneme reddedilir veya baska bir islemin kaydi eslesir.
+            $moka_trx_code = $order_id . '-' . date('YmdHis') . '-' . mt_rand(1000, 9999);
+
+            $request->setOtherTrxCode($moka_trx_code);
             $request->setSoftware('OPENCART');
             $request->setReturnHash(1);
             $request->setRedirectUrl($callback_url);
@@ -147,7 +152,10 @@ class ControllerExtensionPaymentMoka extends Controller
             $payment_data = $payment->getData();
 
             if ($payment_result_code == 'Success') {
-                $this->session->data['codeForHash'] = $payment_data->CodeForHash;
+                // Doğrulama kodu siparişe bağlı ve tek kullanımlık olarak saklanır;
+                // böylece aynı hash başka bir sipariş için tekrar kullanılamaz.
+                $this->load->model('extension/payment/moka');
+                $this->model_extension_payment_moka->savePendingPayment($order_id, $moka_trx_code, $payment_data->CodeForHash, $request->getAmount(), $request->getCurrency());
 
                 $data['redirect'] = $payment_data->Url;
             }
@@ -254,43 +262,177 @@ class ControllerExtensionPaymentMoka extends Controller
         $this->load->model('extension/payment/moka');
         $this->load->library('moka');
 
-        if (isset($this->request->post['hashValue'])) {
-            $code_for_hash = hash('sha256', $this->session->data['codeForHash'] . 'T');
-            $hashValue = $this->request->post['hashValue'];
-            $order_id = $this->session->data['order_id'];
+        $hashValue = (isset($this->request->post['hashValue']) && is_string($this->request->post['hashValue'])) ? $this->request->post['hashValue'] : '';
 
-            if ($code_for_hash == $hashValue) {
-                $options = [
-                    'dealerCode' => $this->config->get('moka_dealer_code'),
-                    'username' => $this->config->get('moka_username'),
-                    'password' => $this->config->get('moka_password'),
-                ];
+        // Doğrulama kaydı, ödeme başlatılırken Moka'ya gönderilen benzersiz işlem
+        // koduyla bulunur. Oturum çerezine bağımlı değildir; bu yüzden banka
+        // dönüşündeki çapraz site POST'ta çerez gelmese bile çalışır.
+        $posted_trx_code = (isset($this->request->post['OtherTrxCode']) && is_scalar($this->request->post['OtherTrxCode'])) ? (string) $this->request->post['OtherTrxCode'] : '';
+        $pending = null;
+        $order_id = 0;
 
-                if ($this->config->get('moka_api_environment') == 'test') {
-                    $options['baseUrl'] = 'https://service.refmoka.com';
-                }
+        if ($posted_trx_code !== '') {
+            $pending = $this->model_extension_payment_moka->getPendingPaymentByTrxCode($posted_trx_code);
+        }
 
-                $moka = new \Moka\MokaClient($options);
+        if (is_array($pending)) {
+            $order_id = (int) $pending['order_id'];
+        } elseif ($posted_trx_code !== '' && ctype_digit($posted_trx_code)) {
+            // Geriye dönük uyumluluk: eski sürümlerde OtherTrxCode sipariş kimliğiydi.
+            $order_id = (int) $posted_trx_code;
+            $pending = $this->model_extension_payment_moka->getPendingPayment($order_id);
+        }
 
-                $paymentDetailRequest = new \Moka\Model\RetrievePaymentDetailRequest();
-                $paymentDetailRequest->setOtherTrxCode($order_id);
+        if ($order_id < 1 && isset($this->session->data['order_id'])) {
+            $order_id = (int) $this->session->data['order_id'];
 
-                $paymentDetail = $moka->payments()->retrieve($paymentDetailRequest);
-
-                $paymentDetail_result_code = $paymentDetail->getResultCode();
-                $paymentDetail_data = $paymentDetail->getData();
-
-                if ($paymentDetail_result_code == 'Success') {
-                    $this->model_extension_payment_moka->addTransaciton($paymentDetail_data->PaymentDetail, $order_id);
-                }
-
-                $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('moka_order_status'));
-
-                $this->response->redirect($this->url->link('checkout/success'));
-            } else {
-                $this->response->redirect($this->url->link('checkout/failure'));
+            if (!is_array($pending)) {
+                $pending = $this->model_extension_payment_moka->getPendingPayment($order_id);
             }
         }
+
+        if ($hashValue === '' || $order_id < 1) {
+            return $this->paymentFailed();
+        }
+        $stored_code = (is_array($pending) && isset($pending['code_for_hash']) && is_string($pending['code_for_hash'])) ? $pending['code_for_hash'] : '';
+
+        // Kayıtlı doğrulama kodu yoksa hiçbir hash kabul edilmez; aksi halde
+        // beklenen değer herkesin hesaplayabildiği sha256("T") sabitine düşer.
+        if ($stored_code === '') {
+            $order_info = $this->model_checkout_order->getOrder($order_id);
+
+            // Aynı callback tekrar geldiyse ve sipariş zaten tamamlandıysa başarı sayfasına dön.
+            if ($order_info && (int) $order_info['order_status_id'] === (int) $this->config->get('moka_order_status')) {
+                return $this->response->redirect($this->url->link('checkout/success'));
+            }
+
+            return $this->paymentFailed();
+        }
+
+        $expected = hash('sha256', $stored_code . 'T');
+
+        // Hash eşleşse bile ödeme Moka tarafında doğrulanamazsa sipariş ödendi sayılmaz.
+        if (!$this->hashEquals($expected, $hashValue) || !$this->verifyPayment($order_id, $pending)) {
+            return $this->paymentFailed();
+        }
+
+        // Kod tek kullanımlıktır: aynı hash ile tekrar oynatılamaz.
+        $this->model_extension_payment_moka->deletePendingPayment($order_id);
+
+        $this->model_checkout_order->addOrderHistory($order_id, $this->config->get('moka_order_status'));
+
+        return $this->response->redirect($this->url->link('checkout/success'));
+    }
+
+    /**
+     * Ödemeyi Moka tarafında sunucu-sunucuya doğrular.
+     *
+     * Hash doğru olsa bile callback istemciden gelir; bu yüzden işlemin Moka'da
+     * gerçekten başarılı olduğu ve tutarın ödeme başlatılırken gönderilen
+     * tutarla eşleştiği doğrulanmadan sipariş ödendi olarak işaretlenmez.
+     */
+    private function verifyPayment($order_id, array $pending)
+    {
+        $options = array(
+            'dealerCode' => $this->config->get('moka_dealer_code'),
+            'username'   => $this->config->get('moka_username'),
+            'password'   => $this->config->get('moka_password'),
+        );
+
+        if ($this->config->get('moka_api_environment') == 'test') {
+            $options['baseUrl'] = 'https://service.refmoka.com';
+        }
+
+        $moka = new \Moka\MokaClient($options);
+
+        $paymentDetailRequest = new \Moka\Model\RetrievePaymentDetailRequest();
+        // Moka sorgusu, ödeme başlatılırken gönderilen benzersiz kodla yapılmalı.
+        $query_trx_code = (is_array($pending) && !empty($pending['trx_code'])) ? (string) $pending['trx_code'] : (string) $order_id;
+
+        $paymentDetailRequest->setOtherTrxCode($query_trx_code);
+
+        $paymentDetail = $moka->payments()->retrieve($paymentDetailRequest);
+
+        if ($paymentDetail->getResultCode() != 'Success') {
+            return false;
+        }
+
+        $paymentDetail_data = $paymentDetail->getData();
+
+        if (!isset($paymentDetail_data->PaymentDetail)) {
+            return false;
+        }
+
+        $detail = $paymentDetail_data->PaymentDetail;
+
+        // Moka durum tablosu: PaymentStatus 2 (Ödeme) + TrxStatus 1 (Başarılı)
+        // birlikte "ödeme başarılı" demektir. TrxStatus tek başına 1; iptal
+        // (PaymentStatus 3) ve ön provizyon (1) için de dönebilir.
+        $payment_status = (isset($detail->PaymentStatus) && is_numeric($detail->PaymentStatus)) ? (int) $detail->PaymentStatus : 0;
+        $trx_status = (isset($detail->TrxStatus) && is_numeric($detail->TrxStatus)) ? (int) $detail->TrxStatus : 0;
+
+        if ($payment_status !== 2 || $trx_status !== 1) {
+            return false;
+        }
+
+        // Tutar, ödeme başlatılırken Moka'ya gönderilen tutarla eşleşmeli.
+        $moka_amount = (isset($detail->Amount) && is_numeric($detail->Amount)) ? (float) $detail->Amount : 0.0;
+        $expected_amount = isset($pending['amount']) ? (float) $pending['amount'] : 0.0;
+
+        if (abs($moka_amount - $expected_amount) >= 0.01) {
+            return false;
+        }
+
+        // Para birimi: TRY ve TL eşdeğerdir, alan boşsa bu adım atlanır.
+        $moka_currency = isset($detail->CurrencyCode) ? strtoupper((string) $detail->CurrencyCode) : '';
+        $expected_currency = isset($pending['currency']) ? strtoupper((string) $pending['currency']) : '';
+
+        if ($moka_currency === 'TRY') {
+            $moka_currency = 'TL';
+        }
+
+        if ($expected_currency === 'TRY') {
+            $expected_currency = 'TL';
+        }
+
+        if ($moka_currency !== '' && $expected_currency !== '' && $moka_currency !== $expected_currency) {
+            return false;
+        }
+
+        $this->model_extension_payment_moka->addTransaciton($detail, $order_id);
+
+        return true;
+    }
+
+    /**
+     * Sabit zamanlı hash karşılaştırması.
+     */
+    private function hashEquals($known, $given)
+    {
+        if (function_exists('hash_equals')) {
+            return hash_equals($known, $given);
+        }
+
+        // PHP 5.6 öncesi için sabit zamanlı yedek.
+        if (!is_string($known) || !is_string($given) || strlen($known) !== strlen($given)) {
+            return false;
+        }
+
+        $diff = 0;
+
+        for ($i = 0; $i < strlen($known); $i++) {
+            $diff |= ord($known[$i]) ^ ord($given[$i]);
+        }
+
+        return $diff === 0;
+    }
+
+    /**
+     * Doğrulanamayan callback için başarısızlık yönlendirmesi.
+     */
+    private function paymentFailed()
+    {
+        return $this->response->redirect($this->url->link('checkout/failure'));
     }
 
     private function validate()
